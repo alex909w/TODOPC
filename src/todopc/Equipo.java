@@ -1,9 +1,9 @@
 package todopc;
 
 public abstract class Equipo {
-    private String fabricante;
-    private String modelo;
-    private String microprocesador;
+    private final String fabricante;
+    private final String modelo;
+    private final String microprocesador;
 
     public Equipo(String fabricante, String modelo, String microprocesador) {
         this.fabricante = fabricante;
@@ -11,7 +11,6 @@ public abstract class Equipo {
         this.microprocesador = microprocesador;
     }
 
-    // Getters
     public String getFabricante() {
         return fabricante;
     }
@@ -23,11 +22,13 @@ public abstract class Equipo {
     public String getMicroprocesador() {
         return microprocesador;
     }
-    
-    
+
     public String toString() {
         return "Fabricante: " + fabricante +
                 "\nModelo: " + modelo +
                 "\nMicroprocesador: " + microprocesador;
     }
+    
+    public abstract String getTipoEquipo();
 }
+
