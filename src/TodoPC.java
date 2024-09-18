@@ -75,12 +75,18 @@ private JPanel crearPanelMenu() {
     btnSalir.setPreferredSize(botonDimension);
     
     // Configuración de los botones
-    JButton[] botones = {btnRegistrarEquipo, btnVerEquipos, btnSalir};
+    JButton[] botones = {btnRegistrarEquipo, btnVerEquipos};
     for (JButton boton : botones) {
         boton.setFont(new Font("Arial", Font.BOLD, 16));
         boton.setBackground(new Color(70, 130, 180)); // Color de fondo para los botones
         boton.setForeground(Color.WHITE); // Color del texto
     }
+    
+   // Configuración del botón Salir
+btnSalir.setFont(new Font("Arial", Font.BOLD, 16));
+btnSalir.setBackground(new Color(70, 130, 180)); // Color de fondo para el botón Salir (rojo)
+btnSalir.setForeground(Color.BLACK); // Color del texto
+
     
     btnRegistrarEquipo.addActionListener(e -> cardLayout.show(panelPrincipal, "RegistrarEquipo"));
     btnVerEquipos.addActionListener(e -> cardLayout.show(panelPrincipal, "VerEquipos"));
@@ -303,74 +309,65 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
 }
 
 
-  
-  
-private JPanel crearPanelRegistro(String tipoEquipo) {
-    // Definimos una seccion principal que se distribuye como una fila y dos columnas
+  private JPanel crearPanelRegistro(String tipoEquipo) {
+    // Definimos un panel principal con BorderLayout
     JPanel mainPanel = new JPanel(new BorderLayout());
     
-    // Definimos la primera seccion
-    JPanel panel = new JPanel();
-    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-    panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    // Panel izquierda: Contiene los campos de entrada
+    JPanel panelIzquierda = new JPanel();
+    panelIzquierda.setLayout(new BoxLayout(panelIzquierda, BoxLayout.Y_AXIS));
+    panelIzquierda.setBorder(BorderFactory.createEmptyBorder(50, 50, 0, 50));
     
-    // Definimos la segunda seccion
-    JPanel panel2 = new JPanel();
-    panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
-    panel2.add(Box.createVerticalGlue()); // Aqui creamos un espacio flex para centrar el boton verticalmente en la parte superior
+    // Panel derecha: Vacío (para margen)
+    JPanel panelDerecha = new JPanel(); // Se mantendrá vacío
     
-    // Definimos una seccion para el titulo
-    JPanel panelTitulo = new JPanel();
+    // Panel central: Contiene la imagen y el botón
+    JPanel panelCentro = new JPanel();
+    panelCentro.setLayout(new BoxLayout(panelCentro, BoxLayout.Y_AXIS));
+    panelCentro.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50)); // Añadir margen izquierdo y derecho
 
+    // Añadimos un panel de título en la parte superior
+    JPanel panelTitulo = new JPanel();
     JLabel titulo = new JLabel("Registrar " + tipoEquipo);
     titulo.setFont(new Font("Arial", Font.BOLD, 25));
     titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
-    panel.add(Box.createRigidArea(new Dimension(0, 20)));
-    
     panelTitulo.setBorder(BorderFactory.createEmptyBorder(30, 0 , 0, 0));
     panelTitulo.add(titulo);
 
-    panel.add(Box.createRigidArea(new Dimension(0, 20)));
-
+    // Creamos los JTextField comunes
     JTextField txtFabricante = new JTextField();
     JTextField txtModelo = new JTextField();
     JTextField txtMicroprocesador = new JTextField();
-    
 
     // Creamos el JLabel para mostrar la imagen
     JLabel labelImagen = new JLabel();
-    labelImagen.setBorder(BorderFactory.createLineBorder(Color.BLACK)); 
-
-    // Establecemos un tamaño mínimo para el JLabel
-    Dimension tamañoEtiqueta = new Dimension(200, 200); 
-    labelImagen.setPreferredSize(tamañoEtiqueta);
-    labelImagen.setMaximumSize(tamañoEtiqueta);
+    labelImagen.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    labelImagen.setPreferredSize(new Dimension(200, 200));
+    labelImagen.setMaximumSize(new Dimension(200, 200));
 
     // Creamos el botón para agregar una imagen
     JButton btnImagenDispositivo = crearBoton("Agregar Imagen");
-    
-    // Establecemos un tamaño mínimo para el botón
-    btnImagenDispositivo.setPreferredSize(new Dimension(tamañoEtiqueta.width, 40)); 
-    btnImagenDispositivo.setMaximumSize(new Dimension(tamañoEtiqueta.width, 40));
-    
-    // Definimos un panel que nos ayude a centrar el boton y el label para la imagen
+    btnImagenDispositivo.setPreferredSize(new Dimension(200, 40));
+    btnImagenDispositivo.setMaximumSize(new Dimension(200, 40));
+
+    // Definimos un panel que nos ayude a centrar la imagen y el botón en el panelCentro
     JPanel imagenContainer = new JPanel();
     imagenContainer.setLayout(new BoxLayout(imagenContainer, BoxLayout.Y_AXIS));
     imagenContainer.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-    imagenContainer.add(Box.createVerticalGlue()); // Definimos un espacio flexible arriba
-    // Agregamos el botón y el JLabel al panel2, alineados verticalmente
-    imagenContainer.add(labelImagen);
-    imagenContainer.add(Box.createRigidArea(new Dimension(0, 10)));
-    imagenContainer.add(btnImagenDispositivo);
-    imagenContainer.add(Box.createVerticalGlue()); // Definimos un espacio flexible abajo
     
-    panel2.add(imagenContainer);
+    imagenContainer.add(Box.createVerticalGlue()); // Espacio flexible arriba
+    imagenContainer.add(labelImagen);
+    imagenContainer.add(Box.createRigidArea(new Dimension(0, 10))); // Espacio entre imagen y botón
+    imagenContainer.add(btnImagenDispositivo);
+    imagenContainer.add(Box.createVerticalGlue()); // Espacio flexible abajo
+    
+    // Agregamos el contenedor al panel central
+    panelCentro.add(imagenContainer);
 
-    panel.add(createFieldPanel("Fabricante:", txtFabricante));
-    panel.add(createFieldPanel("Modelo:", txtModelo));
-    panel.add(createFieldPanel("Microprocesador:", txtMicroprocesador));
-
+    // Añadimos los campos comunes al panel izquierdo
+    panelIzquierda.add(createFieldPanel("Fabricante:", txtFabricante));
+    panelIzquierda.add(createFieldPanel("Modelo:", txtModelo));
+    panelIzquierda.add(createFieldPanel("Microprocesador:", txtMicroprocesador));
 
     JButton btnRegistrar;
     switch (tipoEquipo) {
@@ -378,14 +375,13 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
             JTextField txtTarjetaGrafica = new JTextField();
             JTextField txtTamañoTorre = new JTextField();
             JTextField txtCapacidadDiscoDuro = new JTextField();
-
             JComboBox<String> comboUnidadTorre = createComboBox(new String[]{"IN", "M"});
             JComboBox<String> comboUnidadDisco = createComboBox(new String[]{"GB", "TB"});
 
-            panel.add(createFieldPanel("Tarjeta Gráfica:", txtTarjetaGrafica));
-            panel.add(createFieldPanelWithCombo("Tamaño de Torre:", txtTamañoTorre, comboUnidadTorre));
-            panel.add(createFieldPanelWithCombo("Capacidad de Disco Duro:", txtCapacidadDiscoDuro, comboUnidadDisco));
-            
+            panelIzquierda.add(createFieldPanel("Tarjeta Gráfica:", txtTarjetaGrafica));
+            panelIzquierda.add(createFieldPanelWithCombo("Tamaño de Torre:", txtTamañoTorre, comboUnidadTorre));
+            panelIzquierda.add(createFieldPanelWithCombo("Capacidad de Disco Duro:", txtCapacidadDiscoDuro, comboUnidadDisco));
+
             btnRegistrar = crearBoton("Registrar Desktop");
             btnRegistrar.addActionListener(e -> registrarDesktop(
                     txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
@@ -395,25 +391,23 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
             ));
             break;
 
-
         case "Laptop":
             JTextField txtMemoria = new JTextField();
             JTextField txtTamañoPantalla = new JTextField();
             JTextField txtCapacidadDiscoDuroLaptop = new JTextField();
-
             JComboBox<String> comboUnidadMemoria = createComboBox(new String[]{"GB", "TB"});
             JComboBox<String> comboUnidadPantalla = createComboBox(new String[]{"IN", "M"});
             JComboBox<String> comboUnidadDiscoLaptop = createComboBox(new String[]{"GB", "TB"});
 
-            panel.add(createFieldPanelWithCombo("Memoria:", txtMemoria, comboUnidadMemoria));
-            panel.add(createFieldPanelWithCombo("Tamaño de Pantalla:", txtTamañoPantalla, comboUnidadPantalla));
-            panel.add(createFieldPanelWithCombo("Capacidad de Disco Duro:", txtCapacidadDiscoDuroLaptop, comboUnidadDiscoLaptop));
+            panelIzquierda.add(createFieldPanelWithCombo("Memoria:", txtMemoria, comboUnidadMemoria));
+            panelIzquierda.add(createFieldPanelWithCombo("Tamaño de Pantalla:", txtTamañoPantalla, comboUnidadPantalla));
+            panelIzquierda.add(createFieldPanelWithCombo("Capacidad de Disco Duro:", txtCapacidadDiscoDuroLaptop, comboUnidadDiscoLaptop));
 
             btnRegistrar = crearBoton("Registrar Laptop");
             btnRegistrar.addActionListener(e -> registrarLaptop(
                     txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
                     txtMemoria.getText(), txtTamañoPantalla.getText(), txtCapacidadDiscoDuroLaptop.getText(),
-                    comboUnidadMemoria, comboUnidadPantalla, comboUnidadDiscoLaptop, // Pasar los JComboBox aquí
+                    comboUnidadMemoria, comboUnidadPantalla, comboUnidadDiscoLaptop,
                     txtFabricante, txtModelo, txtMicroprocesador, txtMemoria, txtTamañoPantalla, txtCapacidadDiscoDuroLaptop
             ));
             break;
@@ -423,14 +417,13 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
             JComboBox<String> cbTipoPantalla = new JComboBox<>(new String[]{"Capacitiva", "Resistiva"});
             JTextField txtTamañoMemoriaNAND = new JTextField();
             JTextField txtSistemaOperativo = new JTextField();
-
             JComboBox<String> comboUnidadPantallaT = createComboBox(new String[]{"IN", "M"});
             JComboBox<String> comboUnidadMemoriaNAND = createComboBox(new String[]{"GB", "TB"});
 
-            panel.add(createFieldPanelWithCombo("Tamaño de Pantalla:", txtTamañoPantallaTablet, comboUnidadPantallaT));
-            panel.add(createFieldPanel("Tipo de Pantalla:", cbTipoPantalla));
-            panel.add(createFieldPanelWithCombo("Tamaño de Memoria NAND:", txtTamañoMemoriaNAND, comboUnidadMemoriaNAND));
-            panel.add(createFieldPanel("Sistema Operativo:", txtSistemaOperativo));
+            panelIzquierda.add(createFieldPanelWithCombo("Tamaño de Pantalla:", txtTamañoPantallaTablet, comboUnidadPantallaT));
+            panelIzquierda.add(createFieldPanel("Tipo de Pantalla:", cbTipoPantalla));
+            panelIzquierda.add(createFieldPanelWithCombo("Tamaño de Memoria NAND:", txtTamañoMemoriaNAND, comboUnidadMemoriaNAND));
+            panelIzquierda.add(createFieldPanel("Sistema Operativo:", txtSistemaOperativo));
 
             btnRegistrar = crearBoton("Registrar Tablet");
             btnRegistrar.addActionListener(e -> registrarTablet(
@@ -442,7 +435,6 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
             ));
             break;
 
-
         default:
             throw new IllegalStateException("Unexpected value: " + tipoEquipo);
     }
@@ -453,37 +445,32 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
     JButton btnVolverPrincipal = crearBoton("Volver al Menú Principal");
     btnVolverPrincipal.addActionListener(e -> cardLayout.show(panelPrincipal, "Menu"));
 
-    // Agregar los botones en una cuadrícula de 3 columnas
-    JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout(1, 3, 10, 10)); // 1 fila y 3 columnas para los botones
+    // Panel de botones
+    JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 10)); // 1 fila y 3 columnas
+    buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 25, 30, 25));
 
-    Dimension botonDimension = new Dimension(150, 40); // Ajustar el tamaño de los botones
     JButton[] botones = {btnRegistrar, btnVolverRegistro, btnVolverPrincipal};
     for (JButton boton : botones) {
-        boton.setPreferredSize(botonDimension);
+        boton.setPreferredSize(new Dimension(150, 40));
         boton.setFont(new Font("Arial", Font.BOLD, 16));
-        boton.setBackground(new Color(70, 130, 180)); // Color de fondo para los botones
-        boton.setForeground(Color.WHITE); // Color del texto
+        boton.setBackground(new Color(70, 130, 180));
+        boton.setForeground(Color.WHITE);
     }
-
-    btnVolverRegistro.setForeground(Color.BLACK); // Color del texto del botón "Volver al Menú de Registro"
+    btnVolverRegistro.setForeground(Color.BLACK);
 
     buttonPanel.add(btnRegistrar);
     buttonPanel.add(btnVolverRegistro);
     buttonPanel.add(btnVolverPrincipal);
-    
-    buttonPanel.setBorder(BorderFactory.createEmptyBorder(0 , 25, 30, 25));
 
     // Agregamos las secciones al panel principal
     mainPanel.add(panelTitulo, BorderLayout.NORTH);
-    mainPanel.add(panel, BorderLayout.WEST);
-    mainPanel.add(panel2, BorderLayout.EAST);
-    mainPanel.add(buttonPanel, BorderLayout.SOUTH); // Ubicamos los botones en la parte inferior del panel principal
+    mainPanel.add(panelIzquierda, BorderLayout.WEST);
+    mainPanel.add(panelCentro, BorderLayout.CENTER);
+    mainPanel.add(panelDerecha, BorderLayout.EAST); // Invisible, pero proporciona margen
+    mainPanel.add(buttonPanel, BorderLayout.SOUTH); // Los botones en la parte inferior
 
-    
     return mainPanel;
 }
-
 
     private JPanel createFieldPanel(String labelText, JComponent field) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
