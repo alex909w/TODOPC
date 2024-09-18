@@ -326,6 +326,7 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
     panel.add(createFieldPanel("Modelo:", txtModelo));
     panel.add(createFieldPanel("Microprocesador:", txtMicroprocesador));
 
+
     JButton btnRegistrar;
     switch (tipoEquipo) {
         case "Desktop":
@@ -333,32 +334,42 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
             JTextField txtTamañoTorre = new JTextField();
             JTextField txtCapacidadDiscoDuro = new JTextField();
 
+            JComboBox<String> comboUnidadTorre = createComboBox(new String[]{"IN", "M"});
+            JComboBox<String> comboUnidadDisco = createComboBox(new String[]{"GB", "TB"});
+
             panel.add(createFieldPanel("Tarjeta Gráfica:", txtTarjetaGrafica));
-            panel.add(createFieldPanel("Tamaño de Torre:", txtTamañoTorre));
-            panel.add(createFieldPanel("Capacidad de Disco Duro:", txtCapacidadDiscoDuro));
+            panel.add(createFieldPanelWithCombo("Tamaño de Torre:", txtTamañoTorre, comboUnidadTorre));
+            panel.add(createFieldPanelWithCombo("Capacidad de Disco Duro:", txtCapacidadDiscoDuro, comboUnidadDisco));
 
             btnRegistrar = crearBoton("Registrar Desktop");
             btnRegistrar.addActionListener(e -> registrarDesktop(
-                txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
-                txtTarjetaGrafica.getText(), txtTamañoTorre.getText(), txtCapacidadDiscoDuro.getText(),
-                txtFabricante, txtModelo, txtMicroprocesador, txtTarjetaGrafica, txtTamañoTorre, txtCapacidadDiscoDuro
+                    txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
+                    txtTarjetaGrafica.getText(), txtTamañoTorre.getText(), comboUnidadTorre.getSelectedItem().toString(),
+                    txtCapacidadDiscoDuro.getText(), comboUnidadDisco.getSelectedItem().toString(),
+                    txtFabricante, txtModelo, txtMicroprocesador, txtTarjetaGrafica, txtTamañoTorre, txtCapacidadDiscoDuro
             ));
             break;
+
 
         case "Laptop":
             JTextField txtMemoria = new JTextField();
             JTextField txtTamañoPantalla = new JTextField();
             JTextField txtCapacidadDiscoDuroLaptop = new JTextField();
 
-            panel.add(createFieldPanel("Memoria:", txtMemoria));
-            panel.add(createFieldPanel("Tamaño de Pantalla:", txtTamañoPantalla));
-            panel.add(createFieldPanel("Capacidad de Disco Duro:", txtCapacidadDiscoDuroLaptop));
+            JComboBox<String> comboUnidadMemoria = createComboBox(new String[]{"GB", "TB"});
+            JComboBox<String> comboUnidadPantalla = createComboBox(new String[]{"IN", "M"});
+            JComboBox<String> comboUnidadDiscoLaptop = createComboBox(new String[]{"GB", "TB"});
+
+            panel.add(createFieldPanelWithCombo("Memoria:", txtMemoria, comboUnidadMemoria));
+            panel.add(createFieldPanelWithCombo("Tamaño de Pantalla:", txtTamañoPantalla, comboUnidadPantalla));
+            panel.add(createFieldPanelWithCombo("Capacidad de Disco Duro:", txtCapacidadDiscoDuroLaptop, comboUnidadDiscoLaptop));
 
             btnRegistrar = crearBoton("Registrar Laptop");
             btnRegistrar.addActionListener(e -> registrarLaptop(
-                txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
-                txtMemoria.getText(), txtTamañoPantalla.getText(), txtCapacidadDiscoDuroLaptop.getText(),
-                txtFabricante, txtModelo, txtMicroprocesador, txtMemoria, txtTamañoPantalla, txtCapacidadDiscoDuroLaptop
+                    txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
+                    txtMemoria.getText(), txtTamañoPantalla.getText(), txtCapacidadDiscoDuroLaptop.getText(),
+                    comboUnidadMemoria, comboUnidadPantalla, comboUnidadDiscoLaptop, // Pasar los JComboBox aquí
+                    txtFabricante, txtModelo, txtMicroprocesador, txtMemoria, txtTamañoPantalla, txtCapacidadDiscoDuroLaptop
             ));
             break;
 
@@ -368,19 +379,24 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
             JTextField txtTamañoMemoriaNAND = new JTextField();
             JTextField txtSistemaOperativo = new JTextField();
 
-            panel.add(createFieldPanel("Tamaño de Pantalla:", txtTamañoPantallaTablet));
+            JComboBox<String> comboUnidadPantallaT = createComboBox(new String[]{"IN", "M"});
+            JComboBox<String> comboUnidadMemoriaNAND = createComboBox(new String[]{"GB", "TB"});
+
+            panel.add(createFieldPanelWithCombo("Tamaño de Pantalla:", txtTamañoPantallaTablet, comboUnidadPantallaT));
             panel.add(createFieldPanel("Tipo de Pantalla:", cbTipoPantalla));
-            panel.add(createFieldPanel("Tamaño de Memoria NAND:", txtTamañoMemoriaNAND));
+            panel.add(createFieldPanelWithCombo("Tamaño de Memoria NAND:", txtTamañoMemoriaNAND, comboUnidadMemoriaNAND));
             panel.add(createFieldPanel("Sistema Operativo:", txtSistemaOperativo));
 
             btnRegistrar = crearBoton("Registrar Tablet");
             btnRegistrar.addActionListener(e -> registrarTablet(
-                txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
-                txtTamañoPantallaTablet.getText(), cbTipoPantalla.getSelectedItem().toString(),
-                txtTamañoMemoriaNAND.getText(), txtSistemaOperativo.getText(),
-                txtFabricante, txtModelo, txtMicroprocesador, txtTamañoPantallaTablet, txtTamañoMemoriaNAND, txtSistemaOperativo
+                    txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
+                    txtTamañoPantallaTablet.getText(), cbTipoPantalla.getSelectedItem().toString(), comboUnidadPantallaT.getSelectedItem().toString(),
+                    txtTamañoMemoriaNAND.getText(), comboUnidadMemoriaNAND.getSelectedItem().toString(),
+                    txtSistemaOperativo.getText(),
+                    txtFabricante, txtModelo, txtMicroprocesador, txtTamañoPantallaTablet, txtTamañoMemoriaNAND, txtSistemaOperativo
             ));
             break;
+
 
         default:
             throw new IllegalStateException("Unexpected value: " + tipoEquipo);
@@ -429,6 +445,23 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
         return panel;
     }
 
+    private JPanel createFieldPanelWithCombo(String labelText, JTextField textField, JComboBox<String> comboBox) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.setPreferredSize(new Dimension(600, 70)); // Ajusta el alto del panel
+        JLabel label = new JLabel(labelText);
+        label.setPreferredSize(new Dimension(200, 40));
+        textField.setPreferredSize(new Dimension(150, 40));
+        comboBox.setPreferredSize(new Dimension(50, 40));
+        panel.add(label);
+        panel.add(textField);
+        panel.add(comboBox);
+        return panel;
+    }
+
+    private JComboBox<String> createComboBox(String[] opciones) {
+        return new JComboBox<>(opciones);
+    }
+
     private JButton crearBoton(String texto) {
         JButton boton = new JButton(texto);
         boton.setPreferredSize(new Dimension(300, 40)); // Establece el alto a 40 píxeles
@@ -436,27 +469,101 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
         return boton;
     }
 
-    private void registrarDesktop(String fabricante, String modelo, String microprocesador, String tarjetaGrafica, String tamañoTorre, String capacidadDiscoDuro, JTextField... campos) {
+    private void registrarDesktop(String fabricante, String modelo, String microprocesador,
+                                  String tarjetaGrafica, String tamañoTorre, String unidadTorre,
+                                  String capacidadDiscoDuro, String unidadDisco, JTextField... campos) {
         if (validarCampos(fabricante, modelo, microprocesador, tarjetaGrafica, tamañoTorre, capacidadDiscoDuro)) {
-            equipos.add(new Desktop(fabricante, modelo, microprocesador, tarjetaGrafica, tamañoTorre, capacidadDiscoDuro));
-            JOptionPane.showMessageDialog(frame, "Desktop registrado exitosamente.");
-            limpiarCampos(campos); // Limpiar campos después de registrar
+            // Validar que los campos de tamaño de torre y capacidad del disco duro sean numéricos
+            if (!esNumerico(tamañoTorre) || !esNumerico(capacidadDiscoDuro)) {
+                JOptionPane.showMessageDialog(frame, "El tamaño de la torre y la capacidad del disco duro deben ser numéricos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Combinar el valor ingresado con la unidad seleccionada
+            tamañoTorre = tamañoTorre + " " + unidadTorre;
+            capacidadDiscoDuro = capacidadDiscoDuro + " " + unidadDisco;
+
+            if (!equipoYaRegistrado(fabricante, modelo)) {
+                equipos.add(new Desktop(fabricante, modelo, microprocesador, tarjetaGrafica, tamañoTorre, capacidadDiscoDuro));
+                JOptionPane.showMessageDialog(frame, "Desktop registrado exitosamente.");
+                limpiarCampos(campos); // Limpiar campos después de registrar
+            } else {
+                JOptionPane.showMessageDialog(frame, "El equipo ya está registrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
-    private void registrarLaptop(String fabricante, String modelo, String microprocesador, String memoria, String tamañoPantalla, String capacidadDiscoDuro, JTextField... campos) {
+
+    private void registrarLaptop(String fabricante, String modelo, String microprocesador,
+                                 String memoria, String tamañoPantalla, String capacidadDiscoDuro,
+                                 JComboBox<String> comboUnidadMemoria, JComboBox<String> comboUnidadPantalla,
+                                 JComboBox<String> comboUnidadDiscoLaptop, JTextField... campos) {
         if (validarCampos(fabricante, modelo, microprocesador, memoria, tamañoPantalla, capacidadDiscoDuro)) {
-            equipos.add(new Laptop(fabricante, modelo, microprocesador, memoria, tamañoPantalla, capacidadDiscoDuro));
-            JOptionPane.showMessageDialog(frame, "Laptop registrada exitosamente.");
-            limpiarCampos(campos); // Limpiar campos después de registrar
+            // Validar que los campos de tamaño de pantalla, memoria y capacidad del disco duro sean numéricos
+            if (!esNumerico(tamañoPantalla) || !esNumerico(capacidadDiscoDuro) || !esNumerico(memoria)) {
+                JOptionPane.showMessageDialog(frame, "El tamaño de la pantalla, la memoria y la capacidad del disco duro deben ser numéricos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Obtener la unidad seleccionada en el JComboBox
+            String unidadDiscoDuro = comboUnidadDiscoLaptop.getSelectedItem().toString();
+            String unidadMemoria = comboUnidadMemoria.getSelectedItem().toString();
+            String unidadPantalla = comboUnidadPantalla.getSelectedItem().toString();
+
+            // Combinar el valor ingresado con la unidad seleccionada
+            capacidadDiscoDuro = capacidadDiscoDuro + " " + unidadDiscoDuro;
+            memoria = memoria + " " + unidadMemoria;
+            tamañoPantalla = tamañoPantalla + " " + unidadPantalla;
+
+            if (!equipoYaRegistrado(fabricante, modelo)) {
+                equipos.add(new Laptop(fabricante, modelo, microprocesador, memoria, tamañoPantalla, capacidadDiscoDuro));
+                JOptionPane.showMessageDialog(frame, "Laptop registrada exitosamente.");
+                limpiarCampos(campos); // Limpiar campos después de registrar
+            } else {
+                JOptionPane.showMessageDialog(frame, "El equipo ya está registrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
-    private void registrarTablet(String fabricante, String modelo, String microprocesador, String tamañoPantalla, String tipoPantalla, String tamañoMemoriaNAND, String sistemaOperativo, JTextField... campos) {
-        if (validarCampos(fabricante, modelo, microprocesador, tamañoPantalla, tipoPantalla, tamañoMemoriaNAND, sistemaOperativo)) {
-            equipos.add(new Tablet(fabricante, modelo, microprocesador, tamañoPantalla, tipoPantalla, tamañoMemoriaNAND, sistemaOperativo));
-            JOptionPane.showMessageDialog(frame, "Tablet registrada exitosamente.");
-            limpiarCampos(campos); // Limpiar campos después de registrar
+    private void registrarTablet(String fabricante, String modelo, String microprocesador,
+                                 String tamañoPantalla, String unidadPantalla, String tipoPantalla,
+                                 String tamañoMemoriaNAND, String unidadMemoriaNAND,
+                                 String sistemaOperativo, JTextField... campos) {
+        if (validarCampos(fabricante, modelo, microprocesador, tamañoPantalla, unidadPantalla, tamañoMemoriaNAND, sistemaOperativo)) {
+            // Validar que los campos de tamaño de pantalla y memoria NAND sean numéricos
+            if (!esNumerico(tamañoPantalla) || !esNumerico(tamañoMemoriaNAND)) {
+                JOptionPane.showMessageDialog(frame, "El tamaño de la pantalla y la memoria NAND deben ser numéricos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Combinar el valor ingresado con la unidad seleccionada
+            tamañoPantalla = tamañoPantalla + " " + unidadPantalla;
+            tamañoMemoriaNAND = tamañoMemoriaNAND + " " + unidadMemoriaNAND;
+
+            if (!equipoYaRegistrado(fabricante, modelo)) {
+                equipos.add(new Tablet(fabricante, modelo, microprocesador, tamañoPantalla, tipoPantalla, tamañoMemoriaNAND, sistemaOperativo));
+                JOptionPane.showMessageDialog(frame, "Tablet registrada exitosamente.");
+                limpiarCampos(campos); // Limpiar campos después de registrar
+            } else {
+                JOptionPane.showMessageDialog(frame, "El equipo ya está registrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private boolean equipoYaRegistrado(String fabricante, String modelo) {
+        for (Equipo equipo : equipos) {
+            if (equipo.getFabricante().equalsIgnoreCase(fabricante) && equipo.getModelo().equalsIgnoreCase(modelo)) {
+                return true; // Equipo ya registrado
+            }
+        }
+        return false;
+    }
+    private boolean esNumerico(String texto) {
+        try {
+            Double.parseDouble(texto);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 
