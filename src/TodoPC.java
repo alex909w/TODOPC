@@ -66,6 +66,7 @@ private JPanel crearPanelMenu() {
     JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 10, 10)); // 1 columna con 10px de espacio entre botones
     
     JButton btnRegistrarEquipo = new JButton("Registrar equipo");
+    btnRegistrarEquipo.setFocusPainted(false);
     JButton btnVerEquipos = new JButton("Ver equipos");
     JButton btnSalir = new JButton("Salir");
     
@@ -74,13 +75,15 @@ private JPanel crearPanelMenu() {
     btnVerEquipos.setPreferredSize(botonDimension);
     btnSalir.setPreferredSize(botonDimension);
     
-    // Configuración de los botones
-    JButton[] botones = {btnRegistrarEquipo, btnVerEquipos};
-    for (JButton boton : botones) {
-        boton.setFont(new Font("Arial", Font.BOLD, 16));
-        boton.setBackground(new Color(70, 130, 180)); // Color de fondo para los botones
-        boton.setForeground(Color.WHITE); // Color del texto
-    }
+           // Configuración del botón Registrar Equipo
+btnRegistrarEquipo.setFont(new Font("Arial", Font.BOLD, 16));
+btnRegistrarEquipo.setBackground(new Color(70, 130, 180)); // Color de fondo para el botón Salir (rojo)
+btnRegistrarEquipo.setForeground(Color.WHITE); // Color del texto
+    
+       // Configuración del botón Ver Equipos
+btnVerEquipos.setFont(new Font("Arial", Font.BOLD, 16));
+btnVerEquipos.setBackground(new Color(70, 130, 180)); // Color de fondo para el botón Salir (rojo)
+btnVerEquipos.setForeground(Color.WHITE); // Color del texto
     
    // Configuración del botón Salir
 btnSalir.setFont(new Font("Arial", Font.BOLD, 16));
@@ -89,6 +92,7 @@ btnSalir.setForeground(Color.BLACK); // Color del texto
 
     
     btnRegistrarEquipo.addActionListener(e -> cardLayout.show(panelPrincipal, "RegistrarEquipo"));
+    
     btnVerEquipos.addActionListener(e -> cardLayout.show(panelPrincipal, "VerEquipos"));
     btnSalir.addActionListener(e -> System.exit(0));
     
@@ -235,7 +239,15 @@ private JPanel crearPanelVerEquipos() {
         boton.setFont(new Font("Arial", Font.BOLD, 16));
         boton.setBackground(new Color(70, 130, 180)); // Color de fondo para los botones
         boton.setForeground(Color.WHITE); // Color del texto
+        
+        // Configuración de color específico para un botón
+    if (boton == btnVolver) {
+        boton.setForeground(Color.BLACK); // Color del texto
     }
+    }
+    
+    
+    
 
     btnVerDesktop.addActionListener(e -> {
         JPanel panelVerDesktop = crearPanelVerEquipos("Desktop");
@@ -297,7 +309,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
     btnVolver.setPreferredSize(new Dimension(150, 40)); // Ajustar el tamaño del botón
     btnVolver.setFont(new Font("Arial", Font.BOLD, 16));
     btnVolver.setBackground(new Color(70, 130, 180)); // Color de fondo para el botón
-    btnVolver.setForeground(Color.WHITE); // Color del texto
+    btnVolver.setForeground(Color.BLACK); // Color del texto
 
     btnVolver.addActionListener(e -> cardLayout.show(panelPrincipal, "VerEquipos"));
 
