@@ -18,7 +18,7 @@ public class TodoPC {
         equipos = new ArrayList<>();
         frame = new JFrame("Gestión de Equipos - TODOPC");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600); // Aumentar el tamaño del frame
+        frame.setSize(1000, 600); // Aumentar el tamaño del frame
         cardLayout = new CardLayout();
         panelPrincipal = new JPanel(cardLayout);
 
@@ -306,21 +306,66 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
   
   
 private JPanel crearPanelRegistro(String tipoEquipo) {
+    // Definimos una seccion principal que se distribuye como una fila y dos columnas
+    JPanel mainPanel = new JPanel(new BorderLayout());
+    
+    // Definimos la primera seccion
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    
+    // Definimos la segunda seccion
+    JPanel panel2 = new JPanel();
+    panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
+    panel2.add(Box.createVerticalGlue()); // Aqui creamos un espacio flex para centrar el boton verticalmente en la parte superior
+    
+    // Definimos una seccion para el titulo
+    JPanel panelTitulo = new JPanel();
 
     JLabel titulo = new JLabel("Registrar " + tipoEquipo);
-    titulo.setFont(new Font("Arial", Font.BOLD, 20));
+    titulo.setFont(new Font("Arial", Font.BOLD, 25));
     titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
     panel.add(Box.createRigidArea(new Dimension(0, 20)));
-    panel.add(titulo);
+    
+    panelTitulo.setBorder(BorderFactory.createEmptyBorder(30, 0 , 0, 0));
+    panelTitulo.add(titulo);
 
     panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
     JTextField txtFabricante = new JTextField();
     JTextField txtModelo = new JTextField();
     JTextField txtMicroprocesador = new JTextField();
+    
+
+    // Creamos el JLabel para mostrar la imagen
+    JLabel labelImagen = new JLabel();
+    labelImagen.setBorder(BorderFactory.createLineBorder(Color.BLACK)); 
+
+    // Establecemos un tamaño mínimo para el JLabel
+    Dimension tamañoEtiqueta = new Dimension(200, 200); 
+    labelImagen.setPreferredSize(tamañoEtiqueta);
+    labelImagen.setMaximumSize(tamañoEtiqueta);
+
+    // Creamos el botón para agregar una imagen
+    JButton btnImagenDispositivo = crearBoton("Agregar Imagen");
+    
+    // Establecemos un tamaño mínimo para el botón
+    btnImagenDispositivo.setPreferredSize(new Dimension(tamañoEtiqueta.width, 40)); 
+    btnImagenDispositivo.setMaximumSize(new Dimension(tamañoEtiqueta.width, 40));
+    
+    // Definimos un panel que nos ayude a centrar el boton y el label para la imagen
+    JPanel imagenContainer = new JPanel();
+    imagenContainer.setLayout(new BoxLayout(imagenContainer, BoxLayout.Y_AXIS));
+    imagenContainer.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    imagenContainer.add(Box.createVerticalGlue()); // Definimos un espacio flexible arriba
+    // Agregamos el botón y el JLabel al panel2, alineados verticalmente
+    imagenContainer.add(labelImagen);
+    imagenContainer.add(Box.createRigidArea(new Dimension(0, 10)));
+    imagenContainer.add(btnImagenDispositivo);
+    imagenContainer.add(Box.createVerticalGlue()); // Definimos un espacio flexible abajo
+    
+    panel2.add(imagenContainer);
 
     panel.add(createFieldPanel("Fabricante:", txtFabricante));
     panel.add(createFieldPanel("Modelo:", txtModelo));
@@ -340,7 +385,7 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
             panel.add(createFieldPanel("Tarjeta Gráfica:", txtTarjetaGrafica));
             panel.add(createFieldPanelWithCombo("Tamaño de Torre:", txtTamañoTorre, comboUnidadTorre));
             panel.add(createFieldPanelWithCombo("Capacidad de Disco Duro:", txtCapacidadDiscoDuro, comboUnidadDisco));
-
+            
             btnRegistrar = crearBoton("Registrar Desktop");
             btnRegistrar.addActionListener(e -> registrarDesktop(
                     txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
@@ -426,11 +471,17 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
     buttonPanel.add(btnRegistrar);
     buttonPanel.add(btnVolverRegistro);
     buttonPanel.add(btnVolverPrincipal);
+    
+    buttonPanel.setBorder(BorderFactory.createEmptyBorder(0 , 25, 30, 25));
 
-    panel.add(Box.createRigidArea(new Dimension(0, 20))); // Espacio antes de los botones
-    panel.add(buttonPanel);
+    // Agregamos las secciones al panel principal
+    mainPanel.add(panelTitulo, BorderLayout.NORTH);
+    mainPanel.add(panel, BorderLayout.WEST);
+    mainPanel.add(panel2, BorderLayout.EAST);
+    mainPanel.add(buttonPanel, BorderLayout.SOUTH); // Ubicamos los botones en la parte inferior del panel principal
 
-    return panel;
+    
+    return mainPanel;
 }
 
 
