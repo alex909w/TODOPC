@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import todopc.Equipo;
@@ -320,8 +321,9 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
     return panel;
 }
 
-
-  private JPanel crearPanelRegistro(String tipoEquipo) {
+// Almacenamos la ruta de la imagen en una variable String
+private String rutaImagenSeleccionadaString;
+private JPanel crearPanelRegistro(String tipoEquipo) {
     // Definimos un panel principal con BorderLayout
     JPanel mainPanel = new JPanel(new BorderLayout());
     
@@ -398,7 +400,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
             btnRegistrar.addActionListener(e -> registrarDesktop(
                     txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
                     txtTarjetaGrafica.getText(), txtTamañoTorre.getText(), comboUnidadTorre.getSelectedItem().toString(),
-                    txtCapacidadDiscoDuro.getText(), comboUnidadDisco.getSelectedItem().toString(),
+                    txtCapacidadDiscoDuro.getText(), comboUnidadDisco.getSelectedItem().toString(), rutaImagenSeleccionadaString,
                     txtFabricante, txtModelo, txtMicroprocesador, txtTarjetaGrafica, txtTamañoTorre, txtCapacidadDiscoDuro
             ));
             break;
@@ -419,7 +421,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
             btnRegistrar.addActionListener(e -> registrarLaptop(
                     txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
                     txtMemoria.getText(), txtTamañoPantalla.getText(), txtCapacidadDiscoDuroLaptop.getText(),
-                    comboUnidadMemoria, comboUnidadPantalla, comboUnidadDiscoLaptop,
+                    comboUnidadMemoria, comboUnidadPantalla, comboUnidadDiscoLaptop, rutaImagenSeleccionadaString,
                     txtFabricante, txtModelo, txtMicroprocesador, txtMemoria, txtTamañoPantalla, txtCapacidadDiscoDuroLaptop
             ));
             break;
@@ -442,7 +444,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
                     txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
                     txtTamañoPantallaTablet.getText(), cbTipoPantalla.getSelectedItem().toString(), comboUnidadPantallaT.getSelectedItem().toString(),
                     txtTamañoMemoriaNAND.getText(), comboUnidadMemoriaNAND.getSelectedItem().toString(),
-                    txtSistemaOperativo.getText(),
+                    txtSistemaOperativo.getText(), rutaImagenSeleccionadaString,
                     txtFabricante, txtModelo, txtMicroprocesador, txtTamañoPantallaTablet, txtTamañoMemoriaNAND, txtSistemaOperativo
             ));
             break;
@@ -473,6 +475,8 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
     buttonPanel.add(btnRegistrar);
     buttonPanel.add(btnVolverRegistro);
     buttonPanel.add(btnVolverPrincipal);
+    
+    btnImagenDispositivo.addActionListener(e -> seleccionarImagen(labelImagen));
 
     // Agregamos las secciones al panel principal
     mainPanel.add(panelTitulo, BorderLayout.NORTH);
@@ -484,7 +488,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
     return mainPanel;
 }
 
-    private JPanel createFieldPanel(String labelText, JComponent field) {
+private JPanel createFieldPanel(String labelText, JComponent field) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel.setPreferredSize(new Dimension(600, 70)); // Ajusta el alto del panel
         JLabel label = new JLabel(labelText);
@@ -495,7 +499,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
         return panel;
     }
 
-    private JPanel createFieldPanelWithCombo(String labelText, JTextField textField, JComboBox<String> comboBox) {
+private JPanel createFieldPanelWithCombo(String labelText, JTextField textField, JComboBox<String> comboBox) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel.setPreferredSize(new Dimension(600, 70)); // Ajusta el alto del panel
         JLabel label = new JLabel(labelText);
@@ -507,21 +511,36 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
         panel.add(comboBox);
         return panel;
     }
+    
+private void seleccionarImagen(JLabel label) {
+        JFileChooser explorador = new JFileChooser();
+        int resultado = explorador.showOpenDialog(null);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File archivo = explorador.getSelectedFile();
+            rutaImagenSeleccionadaString = archivo.getAbsolutePath();
+            
+            // Mostramos la imagen en el JLabel
+            ImageIcon icono = new ImageIcon(rutaImagenSeleccionadaString);
+            // Escalamos la imagen al tamanio del JLabel
+            Image imagenSeleccionada = icono.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
+            label.setIcon(new ImageIcon(imagenSeleccionada));
+        }
+    }
 
-    private JComboBox<String> createComboBox(String[] opciones) {
+private JComboBox<String> createComboBox(String[] opciones) {
         return new JComboBox<>(opciones);
     }
 
-    private JButton crearBoton(String texto) {
+private JButton crearBoton(String texto) {
         JButton boton = new JButton(texto);
         boton.setPreferredSize(new Dimension(300, 40)); // Establece el alto a 40 píxeles
         boton.setFont(new Font("Arial", Font.PLAIN, 14));
         return boton;
     }
 
-    private void registrarDesktop(String fabricante, String modelo, String microprocesador,
+private void registrarDesktop(String fabricante, String modelo, String microprocesador,
                                   String tarjetaGrafica, String tamañoTorre, String unidadTorre,
-                                  String capacidadDiscoDuro, String unidadDisco, JTextField... campos) {
+                                  String capacidadDiscoDuro, String unidadDisco, String imagenRuta, JTextField... campos) {
         if (validarCampos(fabricante, modelo, microprocesador, tarjetaGrafica, tamañoTorre, capacidadDiscoDuro)) {
             // Validar que los campos de tamaño de torre y capacidad del disco duro sean numéricos
             if (!esNumerico(tamañoTorre) || !esNumerico(capacidadDiscoDuro)) {
@@ -534,7 +553,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
             capacidadDiscoDuro = capacidadDiscoDuro + " " + unidadDisco;
 
             if (!equipoYaRegistrado(fabricante, modelo)) {
-                equipos.add(new Desktop(fabricante, modelo, microprocesador, tarjetaGrafica, tamañoTorre, capacidadDiscoDuro));
+                equipos.add(new Desktop(fabricante, modelo, microprocesador, tarjetaGrafica, tamañoTorre, capacidadDiscoDuro, imagenRuta));
                 JOptionPane.showMessageDialog(frame, "Desktop registrado exitosamente.");
                 limpiarCampos(campos); // Limpiar campos después de registrar
             } else {
@@ -544,10 +563,10 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
     }
 
 
-    private void registrarLaptop(String fabricante, String modelo, String microprocesador,
+private void registrarLaptop(String fabricante, String modelo, String microprocesador,
                                  String memoria, String tamañoPantalla, String capacidadDiscoDuro,
                                  JComboBox<String> comboUnidadMemoria, JComboBox<String> comboUnidadPantalla,
-                                 JComboBox<String> comboUnidadDiscoLaptop, JTextField... campos) {
+                                 JComboBox<String> comboUnidadDiscoLaptop, String rutaImagen, JTextField... campos) {
         if (validarCampos(fabricante, modelo, microprocesador, memoria, tamañoPantalla, capacidadDiscoDuro)) {
             // Validar que los campos de tamaño de pantalla, memoria y capacidad del disco duro sean numéricos
             if (!esNumerico(tamañoPantalla) || !esNumerico(capacidadDiscoDuro) || !esNumerico(memoria)) {
@@ -566,7 +585,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
             tamañoPantalla = tamañoPantalla + " " + unidadPantalla;
 
             if (!equipoYaRegistrado(fabricante, modelo)) {
-                equipos.add(new Laptop(fabricante, modelo, microprocesador, memoria, tamañoPantalla, capacidadDiscoDuro));
+                equipos.add(new Laptop(fabricante, modelo, microprocesador, memoria, tamañoPantalla, capacidadDiscoDuro, rutaImagen));
                 JOptionPane.showMessageDialog(frame, "Laptop registrada exitosamente.");
                 limpiarCampos(campos); // Limpiar campos después de registrar
             } else {
@@ -575,10 +594,10 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
         }
     }
 
-    private void registrarTablet(String fabricante, String modelo, String microprocesador,
+private void registrarTablet(String fabricante, String modelo, String microprocesador,
                                  String tamañoPantalla, String unidadPantalla, String tipoPantalla,
                                  String tamañoMemoriaNAND, String unidadMemoriaNAND,
-                                 String sistemaOperativo, JTextField... campos) {
+                                 String sistemaOperativo, String rutaImagen, JTextField... campos) {
         if (validarCampos(fabricante, modelo, microprocesador, tamañoPantalla, unidadPantalla, tamañoMemoriaNAND, sistemaOperativo)) {
             // Validar que los campos de tamaño de pantalla y memoria NAND sean numéricos
             if (!esNumerico(tamañoPantalla) || !esNumerico(tamañoMemoriaNAND)) {
@@ -591,7 +610,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
             tamañoMemoriaNAND = tamañoMemoriaNAND + " " + unidadMemoriaNAND;
 
             if (!equipoYaRegistrado(fabricante, modelo)) {
-                equipos.add(new Tablet(fabricante, modelo, microprocesador, tamañoPantalla, tipoPantalla, tamañoMemoriaNAND, sistemaOperativo));
+                equipos.add(new Tablet(fabricante, modelo, microprocesador, tamañoPantalla, tipoPantalla, tamañoMemoriaNAND, sistemaOperativo, rutaImagen));
                 JOptionPane.showMessageDialog(frame, "Tablet registrada exitosamente.");
                 limpiarCampos(campos); // Limpiar campos después de registrar
             } else {
@@ -600,7 +619,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
         }
     }
 
-    private boolean equipoYaRegistrado(String fabricante, String modelo) {
+private boolean equipoYaRegistrado(String fabricante, String modelo) {
         for (Equipo equipo : equipos) {
             if (equipo.getFabricante().equalsIgnoreCase(fabricante) && equipo.getModelo().equalsIgnoreCase(modelo)) {
                 return true; // Equipo ya registrado
@@ -608,7 +627,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
         }
         return false;
     }
-    private boolean esNumerico(String texto) {
+private boolean esNumerico(String texto) {
         try {
             Double.parseDouble(texto);
             return true;
@@ -617,7 +636,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
         }
     }
 
-    private boolean validarCampos(String... campos) {
+private boolean validarCampos(String... campos) {
         for (String campo : campos) {
             if (campo == null || campo.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(frame, "Todos los campos deben ser completados.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -627,7 +646,7 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
         return true;
     }
 
-    private void limpiarCampos(JTextField... campos) {
+private void limpiarCampos(JTextField... campos) {
         for (JTextField campo : campos) {
             campo.setText("");
         }

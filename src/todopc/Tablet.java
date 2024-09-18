@@ -5,8 +5,9 @@ public class Tablet extends Equipo {
     private final String tipoPantalla;
     private final String tamañoMemoriaNAND;
     private final String sistemaOperativo;
+    private final String rutaImagen;
 
-    public Tablet(String fabricante, String modelo, String microprocesador, String tamañoPantalla, String tipoPantalla, String tamañoMemoriaNAND, String sistemaOperativo) {
+    public Tablet(String fabricante, String modelo, String microprocesador, String tamañoPantalla, String tipoPantalla, String tamañoMemoriaNAND, String sistemaOperativo, String rutaImagen) {
         super(fabricante, modelo, microprocesador);
 
         if (tamañoPantalla == null || tamañoPantalla.trim().isEmpty()) {
@@ -27,6 +28,7 @@ public class Tablet extends Equipo {
         this.tipoPantalla = tipoPantalla;
         this.tamañoMemoriaNAND = tamañoMemoriaNAND;
         this.sistemaOperativo = sistemaOperativo;
+        this.rutaImagen = rutaImagen;
     }
 
     public String getTamañoPantalla() {
@@ -43,6 +45,10 @@ public class Tablet extends Equipo {
 
     public String getSistemaOperativo() {
         return sistemaOperativo;
+    }
+    
+    public String getRutaImagen() {
+        return rutaImagen;
     }
 
     @Override
