@@ -8,7 +8,7 @@ public class Tablet extends Equipo {
     private final String rutaImagen;
 
     public Tablet(String fabricante, String modelo, String microprocesador, String tamañoPantalla, String tipoPantalla, String tamañoMemoriaNAND, String sistemaOperativo, String rutaImagen) {
-        super(fabricante, modelo, microprocesador);
+        super(fabricante, modelo, microprocesador, rutaImagen);
 
         if (tamañoPantalla == null || tamañoPantalla.trim().isEmpty()) {
             throw new IllegalArgumentException("El tamaño de pantalla no puede estar vacío");

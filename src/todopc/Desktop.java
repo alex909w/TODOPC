@@ -7,7 +7,7 @@ public class Desktop extends Equipo {
     private final String imagenRuta;
 
     public Desktop(String fabricante, String modelo, String microprocesador, String tarjetaGrafica, String tamañoTorre, String capacidadDiscoDuro, String imagenRuta) {
-        super(fabricante, modelo, microprocesador);
+        super(fabricante, modelo, microprocesador, imagenRuta);
         this.tarjetaGrafica = tarjetaGrafica;
         this.tamañoTorre = tamañoTorre;
         this.capacidadDiscoDuro = capacidadDiscoDuro;

@@ -4,11 +4,13 @@ public abstract class Equipo {
     private final String fabricante;
     private final String modelo;
     private final String microprocesador;
+    private final String rutaImagen;
 
-    public Equipo(String fabricante, String modelo, String microprocesador) {
+    public Equipo(String fabricante, String modelo, String microprocesador, String rutaImagen) {
         this.fabricante = fabricante;
         this.modelo = modelo;
         this.microprocesador = microprocesador;
+        this.rutaImagen = rutaImagen;
     }
 
     public String getFabricante() {
@@ -21,6 +23,10 @@ public abstract class Equipo {
 
     public String getMicroprocesador() {
         return microprocesador;
+    }
+    
+    public String getRutaImagen() {
+        return rutaImagen;
     }
 
     public String toString() {

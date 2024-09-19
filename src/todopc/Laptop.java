@@ -7,7 +7,7 @@ public class Laptop extends Equipo {
     private final String rutaImagen;
 
     public Laptop(String fabricante, String modelo, String microprocesador, String memoria, String tamañoPantalla, String capacidadDiscoDuro, String rutaImagen) {
-        super(fabricante, modelo, microprocesador);
+        super(fabricante, modelo, microprocesador, rutaImagen);
         this.memoria = memoria;
         this.tamañoPantalla = tamañoPantalla;
         this.capacidadDiscoDuro = capacidadDiscoDuro;

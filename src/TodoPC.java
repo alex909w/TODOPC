@@ -291,26 +291,54 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
     titulo.setFont(new Font("Arial", Font.BOLD, 20));
     panel.add(titulo, BorderLayout.NORTH);
 
-    JTextArea textArea = new JTextArea();
-    textArea.setEditable(false);
-    JScrollPane scrollPane = new JScrollPane(textArea);
+    // Crear un panel para contener las imágenes y la descripción de cada equipo
+    JPanel panelEquipos = new JPanel();
+    panelEquipos.setLayout(new BoxLayout(panelEquipos, BoxLayout.Y_AXIS)); // Panel con layout en columna
+    JScrollPane scrollPane = new JScrollPane(panelEquipos);
     panel.add(scrollPane, BorderLayout.CENTER);
 
+    // Cargar los registros y las imágenes en el Swing thread
     SwingUtilities.invokeLater(() -> {
-        StringBuilder sb = new StringBuilder();
         for (Equipo equipo : equipos) {
             if (equipo.getClass().getSimpleName().equals(tipoEquipo)) {
-                sb.append(equipo).append("\n\n");
+                // Crear un subpanel para contener la imagen y la descripción
+                JPanel panelEquipo = new JPanel();
+                panelEquipo.setLayout(new BorderLayout());
+                panelEquipo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+                // Cargar la imagen del equipo
+                JLabel labelImagen = new JLabel();
+                if (rutaImagenSeleccionadaString != null && !rutaImagenSeleccionadaString.isEmpty()) {
+                    ImageIcon icono = new ImageIcon(rutaImagenSeleccionadaString);
+                    Image imagen = icono.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH); // Ajustar tamaño
+                    labelImagen.setIcon(new ImageIcon(imagen));
+                } else {
+                    labelImagen.setText("Sin imagen"); // Si no hay imagen, mostrar un texto alternativo
+                }
+
+                // Crear un área de texto para la descripción del equipo
+                JTextArea textArea = new JTextArea(equipo.toString());
+                textArea.setEditable(false);
+                textArea.setLineWrap(true);
+                textArea.setWrapStyleWord(true);
+                textArea.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+
+                // Agregar la imagen y el texto al subpanel
+                panelEquipo.add(labelImagen, BorderLayout.NORTH);
+                panelEquipo.add(textArea, BorderLayout.CENTER);
+
+                // Agregar el subpanel al panel principal de equipos
+                panelEquipos.add(panelEquipo);
             }
         }
-        textArea.setText(sb.toString());
     });
 
+    // Botón de volver
     JButton btnVolver = crearBoton("Volver ");
-    btnVolver.setPreferredSize(new Dimension(150, 40)); // Ajustar el tamaño del botón
+    btnVolver.setPreferredSize(new Dimension(150, 40));
     btnVolver.setFont(new Font("Arial", Font.BOLD, 16));
-    btnVolver.setBackground(new Color(70, 130, 180)); // Color de fondo para el botón
-    btnVolver.setForeground(Color.BLACK); // Color del texto
+    btnVolver.setBackground(new Color(70, 130, 180));
+    btnVolver.setForeground(Color.BLACK);
 
     btnVolver.addActionListener(e -> cardLayout.show(panelPrincipal, "VerEquipos"));
 
