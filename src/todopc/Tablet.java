@@ -5,7 +5,7 @@ public class Tablet extends Equipo {
     private final String tipoPantalla;
     private final String tamañoMemoriaNAND;
     private final String sistemaOperativo;
-    private final String rutaImagen;
+    private String rutaImagen;
 
     public Tablet(String fabricante, String modelo, String microprocesador, String tamañoPantalla, String tipoPantalla, String tamañoMemoriaNAND, String sistemaOperativo, String rutaImagen) {
         super(fabricante, modelo, microprocesador, rutaImagen);
@@ -49,6 +49,10 @@ public class Tablet extends Equipo {
     
     public String getRutaImagen() {
         return rutaImagen;
+    }
+    
+    public void setRutaImagen(String rutaImagen) {
+        this.rutaImagen = rutaImagen;
     }
 
     @Override

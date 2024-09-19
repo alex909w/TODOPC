@@ -4,7 +4,7 @@ public class Laptop extends Equipo {
     private final String memoria;
     private final String tamañoPantalla;
     private final String capacidadDiscoDuro;
-    private final String rutaImagen;
+    private String rutaImagen;
 
     public Laptop(String fabricante, String modelo, String microprocesador, String memoria, String tamañoPantalla, String capacidadDiscoDuro, String rutaImagen) {
         super(fabricante, modelo, microprocesador, rutaImagen);
@@ -16,6 +16,10 @@ public class Laptop extends Equipo {
     
     public String getRutaImagen() {
         return rutaImagen;
+    }
+    
+    public void setRutaImagen(String rutaImagen) {
+        this.rutaImagen = rutaImagen;
     }
 
     @Override

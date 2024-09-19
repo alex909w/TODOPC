@@ -4,7 +4,7 @@ public abstract class Equipo {
     private final String fabricante;
     private final String modelo;
     private final String microprocesador;
-    private final String rutaImagen;
+    private String rutaImagen;
 
     public Equipo(String fabricante, String modelo, String microprocesador, String rutaImagen) {
         this.fabricante = fabricante;
@@ -27,6 +27,10 @@ public abstract class Equipo {
     
     public String getRutaImagen() {
         return rutaImagen;
+    }
+    
+    public void setRutaImagen(String rutaImagen) {
+        this.rutaImagen = rutaImagen;
     }
 
     public String toString() {

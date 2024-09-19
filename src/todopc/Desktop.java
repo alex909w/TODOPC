@@ -4,8 +4,8 @@ public class Desktop extends Equipo {
     private final String tarjetaGrafica;
     private final String tamañoTorre;
     private final String capacidadDiscoDuro;
-    private final String imagenRuta;
-
+    private String imagenRuta;
+    
     public Desktop(String fabricante, String modelo, String microprocesador, String tarjetaGrafica, String tamañoTorre, String capacidadDiscoDuro, String imagenRuta) {
         super(fabricante, modelo, microprocesador, imagenRuta);
         this.tarjetaGrafica = tarjetaGrafica;
@@ -33,6 +33,11 @@ public class Desktop extends Equipo {
     public String getImagenRuta() {
         return imagenRuta;
     }
+    
+    public void setImagenRuta(String imagenRuta) {
+        this.imagenRuta = imagenRuta;
+    }
+
 
     @Override
     public String getTipoEquipo() {

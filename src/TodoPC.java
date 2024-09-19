@@ -291,49 +291,55 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
     titulo.setFont(new Font("Arial", Font.BOLD, 20));
     panel.add(titulo, BorderLayout.NORTH);
 
-    // Crear un panel para contener las imágenes y la descripción de cada equipo
-    JPanel panelEquipos = new JPanel();
-    panelEquipos.setLayout(new BoxLayout(panelEquipos, BoxLayout.Y_AXIS)); // Panel con layout en columna
+    // Creamos un panel para contener las tarjetas de cada equipo
+    JPanel panelEquipos = new JPanel(new GridLayout(0, 4, 30, 30)); // GridLayout de 3 columnas
+    panelEquipos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+    // Iteraramos sobre los equipos y crear una tarjeta para cada uno
+    for (Equipo equipo : equipos) {
+        if (equipo.getClass().getSimpleName().equals(tipoEquipo)) {
+            // Creamos una tarjeta para el equipo
+            JPanel card = new JPanel(new BorderLayout());
+            card.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            card.setBackground(Color.WHITE);
+            card.setPreferredSize(new Dimension(200, 200));
+
+            // Panel para la imagen
+            JPanel panelImagen = new JPanel(new BorderLayout());
+            panelImagen.setBackground(Color.LIGHT_GRAY);
+            JLabel labelImagen = new JLabel();
+            if (equipo.getRutaImagen() != null && !equipo.getRutaImagen().isEmpty()) {
+                ImageIcon icono = new ImageIcon(equipo.getRutaImagen());
+                Image imagen = icono.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+                labelImagen.setIcon(new ImageIcon(imagen));
+            } else {
+                labelImagen.setText("Sin imagen");
+                labelImagen.setHorizontalAlignment(SwingConstants.CENTER);
+                labelImagen.setVerticalAlignment(SwingConstants.CENTER);
+            }
+            panelImagen.add(labelImagen, BorderLayout.CENTER);
+
+            // Panel para la descripción
+            JPanel panelDescripcion = new JPanel(new BorderLayout());
+            JTextArea textArea = new JTextArea(equipo.toString());
+            textArea.setEditable(false);
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
+            panelDescripcion.add(textArea, BorderLayout.CENTER);
+
+            // Agregamos la imagen y descripción a la tarjeta
+            card.add(panelImagen, BorderLayout.NORTH);
+            card.add(panelDescripcion, BorderLayout.CENTER);
+
+            // Agregamos tarjeta al panel principal de equipos
+            panelEquipos.add(card);
+        }
+    }
+
+    // Scroll pane para el panel de equipos
     JScrollPane scrollPane = new JScrollPane(panelEquipos);
     panel.add(scrollPane, BorderLayout.CENTER);
 
-    // Cargar los registros y las imágenes en el Swing thread
-    SwingUtilities.invokeLater(() -> {
-        for (Equipo equipo : equipos) {
-            if (equipo.getClass().getSimpleName().equals(tipoEquipo)) {
-                // Crear un subpanel para contener la imagen y la descripción
-                JPanel panelEquipo = new JPanel();
-                panelEquipo.setLayout(new BorderLayout());
-                panelEquipo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-                // Cargar la imagen del equipo
-                JLabel labelImagen = new JLabel();
-                if (rutaImagenSeleccionadaString != null && !rutaImagenSeleccionadaString.isEmpty()) {
-                    ImageIcon icono = new ImageIcon(rutaImagenSeleccionadaString);
-                    Image imagen = icono.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH); // Ajustar tamaño
-                    labelImagen.setIcon(new ImageIcon(imagen));
-                } else {
-                    labelImagen.setText("Sin imagen"); // Si no hay imagen, mostrar un texto alternativo
-                }
-
-                // Crear un área de texto para la descripción del equipo
-                JTextArea textArea = new JTextArea(equipo.toString());
-                textArea.setEditable(false);
-                textArea.setLineWrap(true);
-                textArea.setWrapStyleWord(true);
-                textArea.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-
-                // Agregar la imagen y el texto al subpanel
-                panelEquipo.add(labelImagen, BorderLayout.NORTH);
-                panelEquipo.add(textArea, BorderLayout.CENTER);
-
-                // Agregar el subpanel al panel principal de equipos
-                panelEquipos.add(panelEquipo);
-            }
-        }
-    });
-
-    // Botón de volver
     JButton btnVolver = crearBoton("Volver ");
     btnVolver.setPreferredSize(new Dimension(150, 40));
     btnVolver.setFont(new Font("Arial", Font.BOLD, 16));
