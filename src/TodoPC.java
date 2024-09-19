@@ -282,7 +282,6 @@ private JPanel crearPanelVerEquipos() {
     return panel;
 }
 
-
 private JPanel crearPanelVerEquipos(String tipoEquipo) {
     JPanel panel = new JPanel(new BorderLayout());
     panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -292,31 +291,37 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
     panel.add(titulo, BorderLayout.NORTH);
 
     // Creamos un panel para contener las tarjetas de cada equipo
-    JPanel panelEquipos = new JPanel(new GridLayout(0, 4, 30, 30)); // GridLayout de 3 columnas
+    JPanel panelEquipos = new JPanel(new GridLayout(0, 4, 30, 30)); // GridLayout de 4 columnas
     panelEquipos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-    // Iteraramos sobre los equipos y crear una tarjeta para cada uno
+    // Iteramos sobre los equipos y crear una tarjeta para cada uno
     for (Equipo equipo : equipos) {
         if (equipo.getClass().getSimpleName().equals(tipoEquipo)) {
             // Creamos una tarjeta para el equipo
             JPanel card = new JPanel(new BorderLayout());
             card.setBorder(BorderFactory.createLineBorder(Color.GRAY));
             card.setBackground(Color.WHITE);
-            card.setPreferredSize(new Dimension(200, 200));
+            card.setPreferredSize(new Dimension(200, 330)); // Aumentamos la altura de la tarjeta
 
             // Panel para la imagen
             JPanel panelImagen = new JPanel(new BorderLayout());
             panelImagen.setBackground(Color.LIGHT_GRAY);
+            panelImagen.setPreferredSize(new Dimension(200, 200)); // Asegura que la imagen ocupe un área fija
+
             JLabel labelImagen = new JLabel();
+            labelImagen.setHorizontalAlignment(SwingConstants.CENTER);
+            labelImagen.setVerticalAlignment(SwingConstants.CENTER);
+
             if (equipo.getRutaImagen() != null && !equipo.getRutaImagen().isEmpty()) {
                 ImageIcon icono = new ImageIcon(equipo.getRutaImagen());
-                Image imagen = icono.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+                Image imagen = icono.getImage().getScaledInstance(panelImagen.getPreferredSize().width, 
+                                                                   panelImagen.getPreferredSize().height, 
+                                                                   Image.SCALE_SMOOTH);
                 labelImagen.setIcon(new ImageIcon(imagen));
             } else {
                 labelImagen.setText("Sin imagen");
-                labelImagen.setHorizontalAlignment(SwingConstants.CENTER);
-                labelImagen.setVerticalAlignment(SwingConstants.CENTER);
             }
+
             panelImagen.add(labelImagen, BorderLayout.CENTER);
 
             // Panel para la descripción
@@ -325,6 +330,10 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
             textArea.setEditable(false);
             textArea.setLineWrap(true);
             textArea.setWrapStyleWord(true);
+            textArea.setOpaque(false);  // Para que coincida con el fondo del panel
+            textArea.setFont(new Font("Arial", Font.PLAIN, 12));
+            textArea.setPreferredSize(new Dimension(180, 150));  // Aumentamos la altura para dar más espacio al texto
+
             panelDescripcion.add(textArea, BorderLayout.CENTER);
 
             // Agregamos la imagen y descripción a la tarjeta
@@ -336,11 +345,13 @@ private JPanel crearPanelVerEquipos(String tipoEquipo) {
         }
     }
 
-    // Scroll pane para el panel de equipos
+    // Scroll pane para el panel de equipos (contiene todas las tarjetas)
     JScrollPane scrollPane = new JScrollPane(panelEquipos);
+    scrollPane.setPreferredSize(new Dimension(800, 650)); // Aumentamos el tamaño preferido para dar más espacio
     panel.add(scrollPane, BorderLayout.CENTER);
 
-    JButton btnVolver = crearBoton("Volver ");
+    // Botón para volver
+    JButton btnVolver = crearBoton("Volver");
     btnVolver.setPreferredSize(new Dimension(150, 40));
     btnVolver.setFont(new Font("Arial", Font.BOLD, 16));
     btnVolver.setBackground(new Color(70, 130, 180));
@@ -431,34 +442,76 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
             panelIzquierda.add(createFieldPanelWithCombo("Capacidad de Disco Duro:", txtCapacidadDiscoDuro, comboUnidadDisco));
 
             btnRegistrar = crearBoton("Registrar Desktop");
-            btnRegistrar.addActionListener(e -> registrarDesktop(
-                    txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
-                    txtTarjetaGrafica.getText(), txtTamañoTorre.getText(), comboUnidadTorre.getSelectedItem().toString(),
-                    txtCapacidadDiscoDuro.getText(), comboUnidadDisco.getSelectedItem().toString(), rutaImagenSeleccionadaString,
-                    txtFabricante, txtModelo, txtMicroprocesador, txtTarjetaGrafica, txtTamañoTorre, txtCapacidadDiscoDuro
-            ));
+            btnRegistrar.addActionListener(e -> {
+    registrarDesktop(
+            txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
+            txtTarjetaGrafica.getText(), txtTamañoTorre.getText(), comboUnidadTorre.getSelectedItem().toString(),
+            txtCapacidadDiscoDuro.getText(), comboUnidadDisco.getSelectedItem().toString(), rutaImagenSeleccionadaString,
+            txtFabricante, txtModelo, txtMicroprocesador, txtTarjetaGrafica, txtTamañoTorre, txtCapacidadDiscoDuro
+    );
+    // Limpiar imagen
+    labelImagen.setIcon(null);
+    rutaImagenSeleccionadaString = ""; // Asegúrate de que esta variable esté definida en el contexto correcto
+    // Limpiar campos de texto
+    txtFabricante.setText("");
+    txtModelo.setText("");
+    txtMicroprocesador.setText("");
+    txtTarjetaGrafica.setText("");
+    txtTamañoTorre.setText("");
+    txtCapacidadDiscoDuro.setText("");
+});
             break;
 
         case "Laptop":
-            JTextField txtMemoria = new JTextField();
-            JTextField txtTamañoPantalla = new JTextField();
-            JTextField txtCapacidadDiscoDuroLaptop = new JTextField();
-            JComboBox<String> comboUnidadMemoria = createComboBox(new String[]{"GB", "TB"});
-            JComboBox<String> comboUnidadPantalla = createComboBox(new String[]{"IN", "M"});
-            JComboBox<String> comboUnidadDiscoLaptop = createComboBox(new String[]{"GB", "TB"});
+    JTextField txtMemoria = new JTextField();
+    JTextField txtTamañoPantalla = new JTextField();
+    JTextField txtCapacidadDiscoDuroLaptop = new JTextField();
+    JComboBox<String> comboUnidadMemoria = createComboBox(new String[]{"GB", "TB"});
+    JComboBox<String> comboUnidadPantalla = createComboBox(new String[]{"IN", "M"});
+    JComboBox<String> comboUnidadDiscoLaptop = createComboBox(new String[]{"GB", "TB"});
 
-            panelIzquierda.add(createFieldPanelWithCombo("Memoria:", txtMemoria, comboUnidadMemoria));
-            panelIzquierda.add(createFieldPanelWithCombo("Tamaño de Pantalla:", txtTamañoPantalla, comboUnidadPantalla));
-            panelIzquierda.add(createFieldPanelWithCombo("Capacidad de Disco Duro:", txtCapacidadDiscoDuroLaptop, comboUnidadDiscoLaptop));
+    panelIzquierda.add(createFieldPanelWithCombo("Memoria:", txtMemoria, comboUnidadMemoria));
+    panelIzquierda.add(createFieldPanelWithCombo("Tamaño de Pantalla:", txtTamañoPantalla, comboUnidadPantalla));
+    panelIzquierda.add(createFieldPanelWithCombo("Capacidad de Disco Duro:", txtCapacidadDiscoDuroLaptop, comboUnidadDiscoLaptop));
 
-            btnRegistrar = crearBoton("Registrar Laptop");
-            btnRegistrar.addActionListener(e -> registrarLaptop(
-                    txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
-                    txtMemoria.getText(), txtTamañoPantalla.getText(), txtCapacidadDiscoDuroLaptop.getText(),
-                    comboUnidadMemoria, comboUnidadPantalla, comboUnidadDiscoLaptop, rutaImagenSeleccionadaString,
-                    txtFabricante, txtModelo, txtMicroprocesador, txtMemoria, txtTamañoPantalla, txtCapacidadDiscoDuroLaptop
-            ));
-            break;
+    btnRegistrar = crearBoton("Registrar Laptop");
+    btnRegistrar.addActionListener(e -> {
+        // Registrar el laptop
+        registrarLaptop(
+                txtFabricante.getText(), 
+                txtModelo.getText(),
+                txtMicroprocesador.getText(),
+                txtMemoria.getText(), 
+                txtTamañoPantalla.getText(), 
+                txtCapacidadDiscoDuroLaptop.getText(),
+                comboUnidadMemoria, 
+                comboUnidadPantalla, 
+                comboUnidadDiscoLaptop, 
+                rutaImagenSeleccionadaString,
+                txtFabricante, 
+                txtModelo, 
+                txtMicroprocesador, 
+                txtMemoria, 
+                txtTamañoPantalla, 
+                txtCapacidadDiscoDuroLaptop
+        );
+
+        // Limpiar imagen
+        labelImagen.setIcon(null);
+
+        // Limpiar campos de texto
+        txtFabricante.setText("");
+        txtModelo.setText("");
+        txtMicroprocesador.setText("");
+        txtMemoria.setText("");
+        txtTamañoPantalla.setText("");
+        txtCapacidadDiscoDuroLaptop.setText("");
+
+        // Limpiar ruta de imagen
+        rutaImagenSeleccionadaString = "";
+    });
+    break;
+
 
         case "Tablet":
             JTextField txtTamañoPantallaTablet = new JTextField();
@@ -474,13 +527,25 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
             panelIzquierda.add(createFieldPanel("Sistema Operativo:", txtSistemaOperativo));
 
             btnRegistrar = crearBoton("Registrar Tablet");
-            btnRegistrar.addActionListener(e -> registrarTablet(
-                    txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
-                    txtTamañoPantallaTablet.getText(), cbTipoPantalla.getSelectedItem().toString(), comboUnidadPantallaT.getSelectedItem().toString(),
-                    txtTamañoMemoriaNAND.getText(), comboUnidadMemoriaNAND.getSelectedItem().toString(),
-                    txtSistemaOperativo.getText(), rutaImagenSeleccionadaString,
-                    txtFabricante, txtModelo, txtMicroprocesador, txtTamañoPantallaTablet, txtTamañoMemoriaNAND, txtSistemaOperativo
-            ));
+            btnRegistrar.addActionListener(e -> {
+            registrarTablet(
+            txtFabricante.getText(), txtModelo.getText(), txtMicroprocesador.getText(),
+            txtTamañoPantallaTablet.getText(), cbTipoPantalla.getSelectedItem().toString(), comboUnidadPantallaT.getSelectedItem().toString(),
+            txtTamañoMemoriaNAND.getText(), comboUnidadMemoriaNAND.getSelectedItem().toString(),
+            txtSistemaOperativo.getText(), rutaImagenSeleccionadaString,
+            txtFabricante, txtModelo, txtMicroprocesador, txtTamañoPantallaTablet, txtTamañoMemoriaNAND, txtSistemaOperativo
+         );
+            // Limpiar imagen
+             labelImagen.setIcon(null);
+            rutaImagenSeleccionadaString = ""; // Asegúrate de que esta variable esté definida en el contexto correcto
+            // Limpiar campos de texto
+            txtFabricante.setText("");
+            txtModelo.setText("");
+            txtMicroprocesador.setText("");
+            txtTamañoPantallaTablet.setText("");
+            txtTamañoMemoriaNAND.setText("");
+            txtSistemaOperativo.setText("");
+            });
             break;
 
         default:
@@ -521,6 +586,7 @@ private JPanel crearPanelRegistro(String tipoEquipo) {
 
     return mainPanel;
 }
+
 
 private JPanel createFieldPanel(String labelText, JComponent field) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
