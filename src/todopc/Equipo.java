@@ -39,6 +39,6 @@ public abstract class Equipo {
                 "\nMicroprocesador: " + microprocesador;
     }
     
-    public abstract String getTipoEquipo();
+    public abstract String getTipoEquipo(); //12234
 }
 
